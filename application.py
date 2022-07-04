@@ -4,15 +4,14 @@ import requests
 from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 app = Flask(__name__)
 CORS(app)
 
 domain = "https://onepiecechapters.com"
-
-import certifi
-print(certifi.where())
-
 
 
 def get_data(url):
@@ -23,7 +22,11 @@ def get_data(url):
 
 @app.route('/', methods=['GET'])
 def root():
-    return {"message": 'ok'}
+    if os.environ.get('ENV_EXAMPLE'):
+        message = os.environ.get('ENV_EXAMPLE')
+    else:
+        message = 'ok'
+    return {"message": message}
 
 
 @app.route('/chapter-list', methods=['GET'])
@@ -90,6 +93,5 @@ def get_page_content(chapter):
 
 
 if __name__ == '__main__':
-    print(certifi.where())
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
