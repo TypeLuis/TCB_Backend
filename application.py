@@ -5,34 +5,14 @@ from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
 
 
-import sys
-
-
-def override_where():
-    """ overrides certifi.core.where to return actual location of cacert.pem"""
-    # change this to match the location of cacert.pem
-    return os.path.abspath("cacert.pem")
-
-
-# is the program compiled?
-if hasattr(sys, "frozen"):
-    import certifi.core
-
-    os.environ["REQUESTS_CA_BUNDLE"] = override_where()
-    certifi.core.where = override_where
-
-    # delay importing until after where() has been replaced
-    import requests.utils
-    import requests.adapters
-    # replace these variables in case these modules were
-    # imported before we replaced certifi.core.where
-    requests.utils.DEFAULT_CA_BUNDLE_PATH = override_where()
-    requests.adapters.DEFAULT_CA_BUNDLE_PATH = override_where()
-
 app = Flask(__name__)
 CORS(app)
 
 domain = "https://onepiecechapters.com"
+
+import certifi
+print(certifi.where())
+
 
 
 def get_data(url):
@@ -110,5 +90,6 @@ def get_page_content(chapter):
 
 
 if __name__ == '__main__':
+    print(certifi.where())
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
