@@ -7,9 +7,12 @@ from flask_cors import CORS
 from dotenv import load_dotenv
 load_dotenv()
 
+from blueprint_example import example_blueprint
 
 app = Flask(__name__)
 CORS(app)
+
+app.register_blueprint(example_blueprint)
 
 domain = "https://onepiecechapters.com"
 
