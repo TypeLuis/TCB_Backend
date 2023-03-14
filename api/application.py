@@ -4,15 +4,15 @@ import requests
 from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
-from blueprint_example import example_blueprint
+# from blueprint_example import example_blueprint
 
 app = Flask(__name__)
 CORS(app)
 
-app.register_blueprint(example_blueprint)
+# app.register_blueprint(example_blueprint)
 
 domain = "https://onepiecechapters.com"
 
@@ -21,6 +21,20 @@ def get_data(url):
     page = requests.get(url).text
     doc = bs(page, "html.parser")
     return doc
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    doc = get_data('https://opscans.com/manga/72/vol-tbe-ch-1019/')
+
+    image_list = []
+
+    images = doc.find_all("img", {"class": "wp-manga-chapter-img"})
+    for image in images:
+            image_list.append(image['src'].strip())
+
+    return {"images": image_list,}
+    # wp-manga-chapter-img
 
 
 @app.route('/', methods=['GET'])
@@ -96,5 +110,5 @@ def get_page_content(chapter):
 
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5001))
     app.run(host='0.0.0.0', port=port, debug=True)
