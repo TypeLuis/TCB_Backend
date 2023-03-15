@@ -4,6 +4,12 @@ import requests
 from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
 
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.firefox.options import Options
+
 # from dotenv import load_dotenv
 # load_dotenv()
 
@@ -36,6 +42,68 @@ def test():
     return {"images": image_list,}
     # wp-manga-chapter-img
 
+
+@app.route('/opscan-chapter', methods=['GET'])
+def opscan_chapters():
+    url = 'https://opscans.com/manga/72/'
+    options = Options()
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
+    driver.get(url)
+    try:
+            
+        element = WebDriverWait(driver, 10).until(
+            EC.presence_of_element_located((By.CLASS_NAME, "chapter-release-date"))
+        )
+    finally:
+        # doc = get_data(driver.page_source)
+        # print(driver.page_source)
+        doc = bs(driver.page_source, "html.parser")
+        driver.quit()
+
+    # print(element)
+    data_list = []
+
+    # doc = get_data(url)
+
+    chapter_details = doc.find_all('span', {"class" : "chapter-release-date"})
+    # chapter_details = doc.find_all('li', {"class" : "wp-manga-chapter    "})
+
+    for chapter in chapter_details:
+        # data_list.append(chapter.text)
+        dict = {} 
+        details = chapter.parent
+        title = details.find('a').text.strip()
+
+        if '-' in title:
+            dict['title'] = title.split('-')[1][1:].replace("\"", "'")
+        
+        dict['url'] = details.find('a')['href']
+        
+
+        if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
+            num = title.split(' ')[3]
+            if '.' not in num:
+                dict['chapter'] = int(num)
+            else:
+                continue
+        else:
+            num = title.split(' ')[1][3:]
+            if '.' not in num :
+                dict['chapter'] = int(num)
+            else:
+                continue
+
+        data_list.append(dict)
+    
+    new_data_list = sorted(data_list, key=lambda n: n['chapter']) # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
+
+    s = 'hello'
+    new = list(s)
+    new[2] = 'b'
+    test = ''.join(new)[3:]
+    # print(type(new_data_list[0][chapter]))
+    return {"testy" : test, "test" : new_data_list}
 
 @app.route('/', methods=['GET'])
 def root():
