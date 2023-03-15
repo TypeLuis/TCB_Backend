@@ -8,7 +8,9 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 # from dotenv import load_dotenv
 # load_dotenv()
@@ -46,10 +48,13 @@ def test():
 @app.route('/opscan-chapter', methods=['GET'])
 def opscan_chapters():
     url = 'https://opscans.com/manga/72/'
+
     options = Options()
     options.add_argument("--headless")
-    driver = webdriver.Firefox(options=options)
+    service = ChromeService(executable_path=ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
     driver.get(url)
+
     try:
             
         element = WebDriverWait(driver, 10).until(
