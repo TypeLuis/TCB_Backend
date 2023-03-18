@@ -89,3 +89,24 @@ unwatchForTabs()@TargetList.jsm:70
 unwatchForTargets()@TargetList.jsm:37
 destructor()@TargetList.jsm:109
 close()@RemoteAgent.jsm:136
+1679151388656	geckodriver	INFO	Listening on 127.0.0.1:51080
+1679151391695	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "510 ... 1" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\typel\\AppData\\Local\\Temp\\rust_mozprofile5n7CkS"
+*** You are running in headless mode.
+1679151392673	Marionette	INFO	Marionette enabled
+1679151392677	Marionette	INFO	Listening on port 51094
+Read port: 51094
+WebDriver BiDi listening on ws://127.0.0.1:51081
+1679151392767	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at C:\\Users\\typel\\AppData\\Local\\Temp\\rust_mozprofile5n7CkS\\search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:51081/devtools/browser/b38c5138-4efd-4db7-acd0-7dc05b0402de
+JavaScript warning: https://opscans.com/wp-content/plugins/madara-core/assets/js/script.js?ver=1.7.1, line 990: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/KyjXC9Dx9uMdK4CVFqApFSHrXMqYgfemPqOIhuZsvtM.js line 2 > eval line 3184 > eval line 1 > eval line 1 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+JavaScript warning: https://pagead2.googlesyndication.com/bg/n7KdSiWJFgbDLHajlxoGzrM9J1DJZleIE0kt7I04uFE.js line 2 > eval line 2142 > eval line 1 > eval line 1 > eval, line 1: WEBGL_debug_renderer_info is deprecated in Firefox and will be removed. Please use RENDERER.
+1679151398087	Marionette	INFO	Stopped listening on port 51094
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
