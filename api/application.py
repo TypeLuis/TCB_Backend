@@ -4,15 +4,12 @@ import requests
 from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
 
-from dotenv import load_dotenv
-load_dotenv()
+# from dotenv import load_dotenv
+# load_dotenv()
 
-from blueprint_example import example_blueprint
 
 app = Flask(__name__)
 CORS(app)
-
-app.register_blueprint(example_blueprint)
 
 domain = "https://onepiecechapters.com"
 
@@ -30,6 +27,7 @@ def root():
     else:
         message = 'ok'
     return {"message": message}
+    # return 'ok'
 
 
 @app.route('/chapter-list', methods=['GET'])
