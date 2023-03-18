@@ -1,0 +1,91 @@
+1678926531399	geckodriver	INFO	Listening on 127.0.0.1:63292
+1678926534478	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "632 ... 3" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\13476\\AppData\\Local\\Temp\\rust_mozprofileClVDoy"
+*** You are running in headless mode.
+1678926535150	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+DevTools listening on ws://localhost:63293/devtools/browser/f107b555-66ca-4768-ab32-7464f12a96db
+1678926536648	Marionette	INFO	Listening on port 63300
+1678926537140	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://opscans.com/wp-content/plugins/madara-core/assets/js/script.js?ver=1.7.1, line 990: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/WygWmAr8N2thj-jBdqJCiD6QGZJ45ru74cfJMvWtULI.js line 2 > eval line 6824 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1678926543947	Marionette	INFO	Stopped listening on port 63300
+!!! error running onStopped callback: TypeError: callback is not a function
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: C:\Users\13476\AppData\Local\Temp\rust_mozprofileClVDoy\protections.sqlite
+1678926544725	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+close()@RemoteAgent.jsm:136
+1678926614645	geckodriver	INFO	Listening on 127.0.0.1:49650
+1678926617703	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "496 ... 1" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\13476\\AppData\\Local\\Temp\\rust_mozprofileHLYXYy"
+*** You are running in headless mode.
+1678926618100	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+DevTools listening on ws://localhost:49651/devtools/browser/fe11f8e1-d99b-4b79-99d4-42dd1ebb7710
+1678926619608	Marionette	INFO	Listening on port 49656
+1678926619771	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://opscans.com/wp-content/plugins/madara-core/assets/js/script.js?ver=1.7.1, line 990: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/WygWmAr8N2thj-jBdqJCiD6QGZJ45ru74cfJMvWtULI.js line 2 > eval line 7109 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: https://pagead2.googlesyndication.com/bg/WygWmAr8N2thj-jBdqJCiD6QGZJ45ru74cfJMvWtULI.js line 2 > eval line 3004 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1678926625512	Marionette	INFO	Stopped listening on port 49656
+!!! error running onStopped callback: TypeError: callback is not a function
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: TypeError: NetworkError when attempting to fetch resource.
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A0141,name=PContent::Msg_ScriptError) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A0141,name=PContent::Msg_ScriptError) Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel] Error: (msgtype=0x3A0141,name=PContent::Msg_ScriptError) Channel closing: too late to send/recv, messages will be lost
+
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: C:\Users\13476\AppData\Local\Temp\rust_mozprofileHLYXYy\protections.sqlite
+1678926625958	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+close()@RemoteAgent.jsm:136
+1678927561309	geckodriver	INFO	Listening on 127.0.0.1:52715
+1678927564371	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "527 ... 6" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\13476\\AppData\\Local\\Temp\\rust_mozprofileclPbHT"
+*** You are running in headless mode.
+1678927564972	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+DevTools listening on ws://localhost:52716/devtools/browser/f043f9fa-72a5-421c-8db2-b4dd0bc6fb11
+1678927566445	Marionette	INFO	Listening on port 52721
+1678927566551	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://opscans.com/wp-content/plugins/madara-core/assets/js/script.js?ver=1.7.1, line 990: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/WygWmAr8N2thj-jBdqJCiD6QGZJ45ru74cfJMvWtULI.js line 2 > eval line 2138 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1678927573173	Marionette	INFO	Stopped listening on port 52721
+!!! error running onStopped callback: TypeError: callback is not a function
+JavaScript error: resource://gre/modules/AsyncShutdown.jsm, line 718: Error: Phase "Sqlite.jsm: wait until all connections are closed" is finished, it is too late to register completion condition "protections.sqlite#0: waiting for shutdown"
+1678927573574	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+close()@RemoteAgent.jsm:136
+1678927914393	geckodriver	INFO	Listening on 127.0.0.1:62897
+1678927917420	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "--marionette" "--headless" "--remote-debugging-port" "628 ... 8" "--remote-allow-hosts" "localhost" "-no-remote" "-profile" "C:\\Users\\13476\\AppData\\Local\\Temp\\rust_mozprofileeB2ofW"
+*** You are running in headless mode.
+1678927917811	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+DevTools listening on ws://localhost:62898/devtools/browser/abf8e4bd-e74e-4630-bb1b-ff4bb0af7a64
+1678927919063	Marionette	INFO	Listening on port 62903
+1678927919499	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://opscans.com/wp-content/plugins/madara-core/assets/js/script.js?ver=1.7.1, line 990: unreachable code after return statement
+JavaScript warning: https://pagead2.googlesyndication.com/bg/WygWmAr8N2thj-jBdqJCiD6QGZJ45ru74cfJMvWtULI.js line 2 > eval line 5343 > eval line 1 > eval line 1 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1678927924428	Marionette	INFO	Stopped listening on port 62903
+!!! error running onStopped callback: TypeError: callback is not a function
+JavaScript error: resource://gre/modules/Sqlite.jsm, line 1030: Error: Sqlite.jsm has been shutdown. Cannot open connection to: C:\Users\13476\AppData\Local\Temp\rust_mozprofileeB2ofW\protections.sqlite
+1678927925244	RemoteAgent	ERROR	unable to stop listener: [Exception... "Component returned failure code: 0x8000ffff (NS_ERROR_UNEXPECTED) [nsIWindowMediator.getEnumerator]"  nsresult: "0x8000ffff (NS_ERROR_UNEXPECTED)"  location: "JS frame :: chrome://remote/content/cdp/observers/TargetObserver.jsm :: stop :: line 64"  data: no] Stack trace: stop()@TargetObserver.jsm:64
+unwatchForTabs()@TargetList.jsm:70
+unwatchForTargets()@TargetList.jsm:37
+destructor()@TargetList.jsm:109
+close()@RemoteAgent.jsm:136

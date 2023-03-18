@@ -8,9 +8,12 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.service import Service as ChromeService
+# from webdriver_manager.chrome import ChromeDriverManager
 
 # from dotenv import load_dotenv
 # load_dotenv()
@@ -51,8 +54,20 @@ def opscan_chapters():
 
     options = Options()
     options.add_argument("--headless")
-    service = ChromeService(executable_path=ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service, options=options)
+
+    chrome_options = {
+        'request_storage_base_dir': '/tmp' 
+        # Use /tmp to store captured data
+        # .seleniumwire will get created here
+    }
+    # options.request_storage_base_dir = '/tmp' # Use /tmp to store captured data
+
+    # your_executable_path = "/tmp/geckodriver"
+    
+    # service = ChromeService(executable_path=ChromeDriverManager().install())
+    # driver = webdriver.Firefox(executable_path=your_executable_path, options=options)
+
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options, seleniumwire_options=chrome_options)
     driver.get(url)
 
     try:
@@ -76,39 +91,34 @@ def opscan_chapters():
 
     for chapter in chapter_details:
         # data_list.append(chapter.text)
-        dict = {} 
+        obj = {} 
         details = chapter.parent
         title = details.find('a').text.strip()
 
         if '-' in title:
-            dict['title'] = title.split('-')[1][1:].replace("\"", "'")
+            obj['title'] = title.split('-')[1][1:].replace("\"", "'")
         
-        dict['url'] = details.find('a')['href']
+        obj['url'] = details.find('a')['href']
         
 
         if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
             num = title.split(' ')[3]
             if '.' not in num:
-                dict['chapter'] = int(num)
+                obj['chapter'] = int(num)
             else:
                 continue
         else:
             num = title.split(' ')[1][3:]
             if '.' not in num :
-                dict['chapter'] = int(num)
+                obj['chapter'] = int(num)
             else:
                 continue
 
-        data_list.append(dict)
+        data_list.append(obj)
     
-    new_data_list = sorted(data_list, key=lambda n: n['chapter']) # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
+    new_data_list = sorted(data_list, key=lambda n: n['chapter'], reverse=True) # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
 
-    s = 'hello'
-    new = list(s)
-    new[2] = 'b'
-    test = ''.join(new)[3:]
-    # print(type(new_data_list[0][chapter]))
-    return {"testy" : test, "test" : new_data_list}
+    return {"chapter_list" : new_data_list}
 
 @app.route('/', methods=['GET'])
 def root():
