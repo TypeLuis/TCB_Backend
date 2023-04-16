@@ -139,21 +139,65 @@ def opscan_chapters():
 def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
+    def extract_page_content(url):
+        if url not in cache:
+            doc = get_data(url)
+
+            chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
+            chapter_list = []
+
+            for chapter in chapters:
+                obj = {}
+
+                title = chapter.find('a').text.strip()
+                obj["chapter"] = title
+                obj["url"] = chapter.find("a")["href"]
+
+                if "-" in title:
+                    # [1:] removes first character of string
+                    obj['title'] = title.split('-')[1][1:]
+                    # [:-1] removes last character of string
+                    obj["chapter"] = title.split('-')[0][:-1]
+
+                chapter_list.append(obj)
+
+            cache[url] = chapter_list
+            return chapter_list
+
+        else:
+            return cache[url]
+
+    return {"chapter_list": extract_page_content(url)}
+
+
+@app.route('/opscan-chapter/<int:chapter>', methods=['GET'])
+def get_op_chapter(chapter):
+    url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
+
+    obj = {}
+    image_list = []
+
     doc = get_data(url)
 
-    chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
-    chapter_list = []
+    title = doc.find('li', {'class': 'active'}).text.strip()
 
-    for chapter in chapters:
-        obj = {}
+    obj['chapter'] = title
+    obj['title'] = ''
 
-        title = chapter.find('a').text.split('-')[1:]
-        chapter_list.append(title)
+    if '-' in title:
+        obj['chapter'] = title.split('-')[0][:-1]
+        obj['title'] = title.split('-')[1][1:]
 
-        # print(title)
-    print(chapter_list)
+    images = doc.find_all('img', {'class', 'wp-manga-chapter-img'})
 
-    return {"message": 'ok'}
+    for image in images:
+        image_list.append(image['src'].strip())
+
+    obj["images"] = image_list
+
+    print(obj)
+
+    return obj
 
 
 @app.route('/', methods=['GET'])
