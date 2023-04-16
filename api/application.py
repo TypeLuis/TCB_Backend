@@ -141,7 +141,7 @@ def get_OP_chapters():
 
     doc = get_data(url)
 
-    chapters = doc.find_all('li', {'class': "wp-manga-chapter    "})
+    chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
     chapter_list = []
 
     for chapter in chapters:
