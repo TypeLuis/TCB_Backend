@@ -135,7 +135,7 @@ def opscan_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@app.route('/opscan-chapter-list', methods=['GET'])
+@app.route('/OPSCAN-chapter-list', methods=['GET'])
 def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
@@ -170,7 +170,7 @@ def get_OP_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@app.route('/opscan-chapter/<int:chapter>', methods=['GET'])
+@app.route('/OPSCAN-chapter/<int:chapter>', methods=['GET'])
 def get_op_chapter(chapter):
     url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
 
@@ -210,42 +210,51 @@ def root():
     # return 'ok'
 
 
-@app.route('/chapter-list', methods=['GET'])
+@app.route('/TCB-chapter-list', methods=['GET'])
 def get_chapters():
     try:
 
         url = "https://onepiecechapters.com/mangas/5/one-piece"
 
-        doc = get_data(url)
+        def extract_page_content(url):
 
-        links = doc.find_all(
-            "a", {"class": "block border border-border bg-card mb-3 p-3 rounded"})
+            if url not in cache:
+                doc = get_data(url)
 
-        chapter_list = []
-        for link in links:
+                links = doc.find_all(
+                    "a", {"class": "block border border-border bg-card mb-3 p-3 rounded"})
 
-            obj = {}
+                chapter_list = []
+                for link in links:
 
-            title = link.find(class_='text-gray-500').text
-            chapter = link.find(class_='text-lg font-bold').text
-            url = f'{domain}{link["href"]}'
+                    obj = {}
 
-            if '.' in chapter:
-                continue
+                    title = link.find(class_='text-gray-500').text
+                    chapter = link.find(
+                        class_='text-lg font-bold').text.replace("One Piece ", "")
+                    url = f'{domain}{link["href"]}'
 
-            obj["title"] = title
-            obj["chapter"] = chapter
-            obj["url"] = url
+                    if '.' in chapter:
+                        continue
 
-            chapter_list.append(obj)
+                    obj["title"] = title
+                    obj["chapter"] = chapter
+                    obj["url"] = url
 
-        return {"chapter_list": chapter_list}
+                    chapter_list.append(obj)
+                    cache[url] = chapter_list
+
+                return chapter_list
+            else:
+                return cache[url]
+
+        return {"chapter_list": extract_page_content(url)}
     except Exception as e:
         print(e)
         return {"page_info": f'{e}'}
 
 
-@app.route('/chapter/<int:chapter>', methods=['GET'])
+@app.route('/TCB-chapter/<int:chapter>', methods=['GET'])
 def get_page_content(chapter):
     try:
         url = "https://onepiecechapters.com/mangas/5/one-piece"
