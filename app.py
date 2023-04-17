@@ -140,33 +140,33 @@ def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
     def extract_page_content(url):
-        if url not in cache:
-            doc = get_data(url)
+        # if url not in cache:
+        doc = get_data(url)
 
-            chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
-            print(chapters)
-            chapter_list = []
+        chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
+        print(chapters)
+        chapter_list = []
 
-            for chapter in chapters:
-                obj = {}
+        for chapter in chapters:
+            obj = {}
 
-                title = chapter.find('a').text.strip()
-                obj["chapter"] = title
-                obj["url"] = chapter.find("a")["href"]
+            title = chapter.find('a').text.strip()
+            obj["chapter"] = title
+            obj["url"] = chapter.find("a")["href"]
 
-                if "-" in title:
-                    # [1:] removes first character of string
-                    obj['title'] = title.split('-')[1][1:]
-                    # [:-1] removes last character of string
-                    obj["chapter"] = title.split('-')[0][:-1]
+            if "-" in title:
+                # [1:] removes first character of string
+                obj['title'] = title.split('-')[1][1:]
+                # [:-1] removes last character of string
+                obj["chapter"] = title.split('-')[0][:-1]
 
-                chapter_list.append(obj)
+            chapter_list.append(obj)
 
-            cache[url] = chapter_list
-            return chapter_list
+        cache[url] = chapter_list
+        return [str(doc)]
 
-        else:
-            return cache[url]
+        # else:
+        #     return cache[url]
 
     return {"chapter_list": extract_page_content(url)}
 
