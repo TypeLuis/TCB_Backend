@@ -61,92 +61,69 @@ def opscan_chapters():
     url = 'https://opscans.com/manga/72/'
 
     def extract_page_content(url):
-        # if url not in cache:
-        options = Options()
-        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--enable-javascript")
-        options.add_argument(
-            "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
-        options.add_argument("--headless")
-        driver = webdriver.Chrome(executable_path=os.environ.get(
-            "CHROMEDRIVER_PATH"), options=options)
+        if url not in cache:
+            # How to use Selenium in Heroku
+            # https://www.youtube.com/watch?v=KihY3lKjEyo
+            options = Options()
+            options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--enable-javascript")
+            options.add_argument(
+                "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+            options.add_argument("--headless")
+            driver = webdriver.Chrome(executable_path=os.environ.get(
+                "CHROMEDRIVER_PATH"), options=options)
 
-        # chrome_options = {
-        #     'request_storage_base_dir': '/tmp'
-        #     # Use /tmp to store captured data
-        #     # .seleniumwire will get created here
-        # }
-        # options.request_storage_base_dir = '/tmp' # Use /tmp to store captured data
-        # service = ChromeService(executable_path=ChromeDriverManager().install())
-        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
-        # )), options=options)
+            driver.get(url)
 
-        # your_executable_path = "/tmp/geckodriver.log"
-        # ff_profile_dir = "/usr/local/selenium/webdriver/firefox"
-        # ff_profile = webdriver.FirefoxProfile(profile_directory=ff_profile_dir)
-        # driver = webdriver.Firefox(
-        #     executable_path=your_executable_path, options=options)
+            try:
 
-        driver.get(url)
+                element = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located(
+                        (By.CLASS_NAME, "chapter-release-date"))
+                )
+            finally:
+                doc = bs(driver.page_source, "html.parser")
+                driver.quit()
 
-        # try:
+            data_list = []
 
-        #     element = WebDriverWait(driver, 10).until(
-        #         EC.presence_of_element_located(
-        #             (By.CLASS_NAME, "chapter-release-date"))
-        #     )
-        # finally:
-        #     # doc = get_data(driver.page_source)
-        #     # print(driver.page_source)
-        doc = bs(driver.page_source, "html.parser")
-        driver.quit()
+            chapter_details = doc.find_all(
+                'span', {"class": "chapter-release-date"})
 
-        return [str(doc)]
+            for chapter in chapter_details:
+                obj = {}
+                details = chapter.parent
+                title = details.find('a').text.strip()
 
-        # print(element)
-        data_list = []
+                if '-' in title:
+                    obj['title'] = title.split('-')[1][1:].replace("\"", "'")
 
-        # doc = get_data(url)
+                obj['url'] = details.find('a')['href']
 
-        chapter_details = doc.find_all(
-            'span', {"class": "chapter-release-date"})
-        # chapter_details = doc.find_all('li', {"class" : "wp-manga-chapter    "})
-
-        for chapter in chapter_details:
-            # data_list.append(chapter.text)
-            obj = {}
-            details = chapter.parent
-            title = details.find('a').text.strip()
-
-            if '-' in title:
-                obj['title'] = title.split('-')[1][1:].replace("\"", "'")
-
-            obj['url'] = details.find('a')['href']
-
-            if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
-                num = title.split(' ')[3]
-                if '.' not in num:
-                    obj['chapter'] = int(num)
+                if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
+                    num = title.split(' ')[3]
+                    if '.' not in num:
+                        obj['chapter'] = int(num)
+                    else:
+                        continue
                 else:
-                    continue
-            else:
-                num = title.split(' ')[1][3:]
-                if '.' not in num:
-                    obj['chapter'] = int(num)
-                else:
-                    continue
+                    num = title.split(' ')[1][3:]
+                    if '.' not in num:
+                        obj['chapter'] = int(num)
+                    else:
+                        continue
 
-            data_list.append(obj)
+                data_list.append(obj)
 
-        # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
-        new_data_list = sorted(
-            data_list, key=lambda n: n['chapter'], reverse=True)
-        cache[url] = new_data_list
-        return new_data_list
-        # else:
-        #     return cache[url]
+            # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
+            new_data_list = sorted(
+                data_list, key=lambda n: n['chapter'], reverse=True)
+            cache[url] = new_data_list
+            return new_data_list
+        else:
+            return cache[url]
 
     return {"chapter_list": extract_page_content(url)}
 
@@ -156,46 +133,49 @@ def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
     def extract_page_content(url):
-        # if url not in cache:
+        if url not in cache:
 
-        options = Options()
-        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
-        options.add_argument("--headless")
-        driver = webdriver.Chrome(executable_path=os.environ.get(
-            "CHROMEDRIVER_PATH"), options=options)
+            options = Options()
+            options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
+            options.add_argument("--headless")
+            options.add_argument("--enable-javascript")
+            options.add_argument(
+                "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+            driver = webdriver.Chrome(executable_path=os.environ.get(
+                "CHROMEDRIVER_PATH"), options=options)
 
-        driver.get(url)
-        doc = bs(driver.page_source, "html.parser")
-        driver.quit()
+            driver.get(url)
+            doc = bs(driver.page_source, "html.parser")
+            driver.quit()
 
-        # doc = get_data(url)
+            # doc = get_data(url)
 
-        chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
-        print(chapters)
-        chapter_list = []
+            chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
+            print(chapters)
+            chapter_list = []
 
-        for chapter in chapters:
-            obj = {}
+            for chapter in chapters:
+                obj = {}
 
-            title = chapter.find('a').text.strip()
-            obj["chapter"] = title
-            obj["url"] = chapter.find("a")["href"]
+                title = chapter.find('a').text.strip()
+                obj["chapter"] = title
+                obj["url"] = chapter.find("a")["href"]
 
-            if "-" in title:
-                # [1:] removes first character of string
-                obj['title'] = title.split('-')[1][1:]
-                # [:-1] removes last character of string
-                obj["chapter"] = title.split('-')[0][:-1]
+                if "-" in title:
+                    # [1:] removes first character of string
+                    obj['title'] = title.split('-')[1][1:]
+                    # [:-1] removes last character of string
+                    obj["chapter"] = title.split('-')[0][:-1]
 
-            chapter_list.append(obj)
+                chapter_list.append(obj)
 
-        cache[url] = chapter_list
-        return [str(doc)]
+            cache[url] = chapter_list
+            return chapter_list
 
-        # else:
-        #     return cache[url]
+        else:
+            return cache[url]
 
     return {"chapter_list": extract_page_content(url)}
 
