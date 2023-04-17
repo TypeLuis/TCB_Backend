@@ -88,17 +88,17 @@ def opscan_chapters():
 
         driver.get(url)
 
-        try:
+        # try:
 
-            element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.CLASS_NAME, "chapter-release-date"))
-            )
-        finally:
-            # doc = get_data(driver.page_source)
-            # print(driver.page_source)
-            doc = bs(driver.page_source, "html.parser")
-            driver.quit()
+        #     element = WebDriverWait(driver, 10).until(
+        #         EC.presence_of_element_located(
+        #             (By.CLASS_NAME, "chapter-release-date"))
+        #     )
+        # finally:
+        #     # doc = get_data(driver.page_source)
+        #     # print(driver.page_source)
+        doc = bs(driver.page_source, "html.parser")
+        driver.quit()
 
         return [str(doc)]
 
