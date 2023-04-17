@@ -1,3 +1,4 @@
+import logging
 import os
 from flask import Flask
 import requests
@@ -22,6 +23,10 @@ chromedriver_autoinstaller.install()
 
 app = Flask(__name__)
 CORS(app)
+
+
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
 
 # app.register_blueprint(example_blueprint)
 
