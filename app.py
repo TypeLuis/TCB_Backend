@@ -61,87 +61,89 @@ def opscan_chapters():
     url = 'https://opscans.com/manga/72/'
 
     def extract_page_content(url):
-        if url not in cache:
-            options = Options()
-            options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
-            options.add_argument("--no-sandbox")
-            options.add_argument("--disable-dev-shm-usage")
-            options.add_argument("--headless")
-            driver = webdriver.Chrome(executable_path=os.environ.get(
-                "CHROMEDRIVER_PATH"), options=options)
+        # if url not in cache:
+        options = Options()
+        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument("--headless")
+        driver = webdriver.Chrome(executable_path=os.environ.get(
+            "CHROMEDRIVER_PATH"), options=options)
 
-            # chrome_options = {
-            #     'request_storage_base_dir': '/tmp'
-            #     # Use /tmp to store captured data
-            #     # .seleniumwire will get created here
-            # }
-            # options.request_storage_base_dir = '/tmp' # Use /tmp to store captured data
-            # service = ChromeService(executable_path=ChromeDriverManager().install())
-            # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
-            # )), options=options)
+        # chrome_options = {
+        #     'request_storage_base_dir': '/tmp'
+        #     # Use /tmp to store captured data
+        #     # .seleniumwire will get created here
+        # }
+        # options.request_storage_base_dir = '/tmp' # Use /tmp to store captured data
+        # service = ChromeService(executable_path=ChromeDriverManager().install())
+        # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
+        # )), options=options)
 
-            # your_executable_path = "/tmp/geckodriver.log"
-            # ff_profile_dir = "/usr/local/selenium/webdriver/firefox"
-            # ff_profile = webdriver.FirefoxProfile(profile_directory=ff_profile_dir)
-            # driver = webdriver.Firefox(
-            #     executable_path=your_executable_path, options=options)
+        # your_executable_path = "/tmp/geckodriver.log"
+        # ff_profile_dir = "/usr/local/selenium/webdriver/firefox"
+        # ff_profile = webdriver.FirefoxProfile(profile_directory=ff_profile_dir)
+        # driver = webdriver.Firefox(
+        #     executable_path=your_executable_path, options=options)
 
-            driver.get(url)
+        driver.get(url)
 
-            try:
+        try:
 
-                element = WebDriverWait(driver, 10).until(
-                    EC.presence_of_element_located(
-                        (By.CLASS_NAME, "chapter-release-date"))
-                )
-            finally:
-                # doc = get_data(driver.page_source)
-                # print(driver.page_source)
-                doc = bs(driver.page_source, "html.parser")
-                driver.quit()
+            element = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located(
+                    (By.CLASS_NAME, "chapter-release-date"))
+            )
+        finally:
+            # doc = get_data(driver.page_source)
+            # print(driver.page_source)
+            doc = bs(driver.page_source, "html.parser")
+            driver.quit()
 
-            # print(element)
-            data_list = []
+        return [str(doc)]
 
-            # doc = get_data(url)
+        # print(element)
+        data_list = []
 
-            chapter_details = doc.find_all(
-                'span', {"class": "chapter-release-date"})
-            # chapter_details = doc.find_all('li', {"class" : "wp-manga-chapter    "})
+        # doc = get_data(url)
 
-            for chapter in chapter_details:
-                # data_list.append(chapter.text)
-                obj = {}
-                details = chapter.parent
-                title = details.find('a').text.strip()
+        chapter_details = doc.find_all(
+            'span', {"class": "chapter-release-date"})
+        # chapter_details = doc.find_all('li', {"class" : "wp-manga-chapter    "})
 
-                if '-' in title:
-                    obj['title'] = title.split('-')[1][1:].replace("\"", "'")
+        for chapter in chapter_details:
+            # data_list.append(chapter.text)
+            obj = {}
+            details = chapter.parent
+            title = details.find('a').text.strip()
 
-                obj['url'] = details.find('a')['href']
+            if '-' in title:
+                obj['title'] = title.split('-')[1][1:].replace("\"", "'")
 
-                if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
-                    num = title.split(' ')[3]
-                    if '.' not in num:
-                        obj['chapter'] = int(num)
-                    else:
-                        continue
+            obj['url'] = details.find('a')['href']
+
+            if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
+                num = title.split(' ')[3]
+                if '.' not in num:
+                    obj['chapter'] = int(num)
                 else:
-                    num = title.split(' ')[1][3:]
-                    if '.' not in num:
-                        obj['chapter'] = int(num)
-                    else:
-                        continue
+                    continue
+            else:
+                num = title.split(' ')[1][3:]
+                if '.' not in num:
+                    obj['chapter'] = int(num)
+                else:
+                    continue
 
-                data_list.append(obj)
+            data_list.append(obj)
 
-            # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
-            new_data_list = sorted(
-                data_list, key=lambda n: n['chapter'], reverse=True)
-            cache[url] = new_data_list
-            return new_data_list
-        else:
-            return cache[url]
+        # sorts list of dicts https://stackoverflow.com/questions/72899/how-do-i-sort-a-list-of-dictionaries-by-a-value-of-the-dictionary
+        new_data_list = sorted(
+            data_list, key=lambda n: n['chapter'], reverse=True)
+        cache[url] = new_data_list
+        return new_data_list
+        # else:
+        #     return cache[url]
 
     return {"chapter_list": extract_page_content(url)}
 
