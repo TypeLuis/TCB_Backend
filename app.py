@@ -187,7 +187,21 @@ def get_op_chapter(chapter):
     obj = {}
     image_list = []
 
-    doc = get_data(url)
+    options = Options()
+    options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--enable-javascript")
+    options.add_argument(
+        "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36")
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(executable_path=os.environ.get(
+        "CHROMEDRIVER_PATH"), options=options)
+
+    driver.get(url)
+    doc = bs(driver.page_source, "html.parser")
+    driver.quit()
+    # doc = get_data(url)
 
     title = doc.find('li', {'class': 'active'}).text.strip()
 
