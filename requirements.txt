@@ -1,5 +1,6 @@
 async-generator==1.10
 attrs==22.2.0
+autopep8==2.0.1
 beautifulsoup4==4.11.1
 bs4==0.0.1
 certifi==2022.9.24
@@ -10,6 +11,7 @@ colorama==0.4.6
 exceptiongroup==1.1.1
 Flask==2.2.2
 Flask-Cors==3.0.10
+gunicorn==20.1.0
 h11==0.14.0
 idna==3.4
 itsdangerous==2.1.2
@@ -17,6 +19,7 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 outcome==1.2.0
 packaging==23.0
+pycodestyle==2.10.0
 pycparser==2.21
 PySocks==1.7.1
 python-dotenv==1.0.0
@@ -26,6 +29,7 @@ six==1.16.0
 sniffio==1.3.0
 sortedcontainers==2.4.0
 soupsieve==2.3.2.post1
+tomli==2.0.1
 tqdm==4.65.0
 trio==0.22.0
 trio-websocket==0.10.0
