@@ -8,12 +8,12 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-# from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.chrome.service import Service as ChromeService
-# from webdriver_manager.firefox import GeckoDriverManager
+
+import chromedriver_autoinstaller
+chromedriver_autoinstaller.install()
 
 # from dotenv import load_dotenv
 # load_dotenv()
@@ -143,9 +143,12 @@ def get_OP_chapters():
         # if url not in cache:
 
         options = Options()
+        options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
         options.add_argument("--headless")
-        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
-        )), options=options)
+        driver = webdriver.Chrome(executable_path=os.environ.get(
+            "CHROMEDRIVER_PATH"), options=options)
 
         driver.get(url)
         doc = bs(driver.page_source, "html.parser")
@@ -173,7 +176,7 @@ def get_OP_chapters():
             chapter_list.append(obj)
 
         cache[url] = chapter_list
-        return [str(doc)]
+        return chapter_list
 
         # else:
         #     return cache[url]
