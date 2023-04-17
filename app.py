@@ -141,7 +141,17 @@ def get_OP_chapters():
 
     def extract_page_content(url):
         # if url not in cache:
-        doc = get_data(url)
+
+        options = Options()
+        options.add_argument("--headless")
+        driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
+        )), options=options)
+
+        driver.get(url)
+        doc = bs(driver.page_source, "html.parser")
+        driver.quit()
+
+        # doc = get_data(url)
 
         chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
         print(chapters)
