@@ -57,7 +57,12 @@ def opscan_chapters():
     def extract_page_content(url):
         if url not in cache:
             options = Options()
+            options.binary_location = os.environ.get("GOOGLE_CHROME_BIN")
+            options.add_argument("--no-sandbox")
+            options.add_argument("--disable-dev-shm-usage")
             options.add_argument("--headless")
+            driver = webdriver.Chrome(executable_path=os.environ.get(
+                "CHROMEDRIVER_PATH"), options=options)
 
             # chrome_options = {
             #     'request_storage_base_dir': '/tmp'
@@ -66,8 +71,8 @@ def opscan_chapters():
             # }
             # options.request_storage_base_dir = '/tmp' # Use /tmp to store captured data
             # service = ChromeService(executable_path=ChromeDriverManager().install())
-            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
-            )), options=options)
+            # driver = webdriver.Chrome(service=Service(ChromeDriverManager().install(
+            # )), options=options)
 
             # your_executable_path = "/tmp/geckodriver.log"
             # ff_profile_dir = "/usr/local/selenium/webdriver/firefox"
@@ -135,7 +140,7 @@ def opscan_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@app.route('/OPSCAN-chapter-list', methods=['GET'])
+@ app.route('/OPSCAN-chapter-list', methods=['GET'])
 def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
@@ -184,7 +189,7 @@ def get_OP_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@app.route('/OPSCAN-chapter/<int:chapter>', methods=['GET'])
+@ app.route('/OPSCAN-chapter/<int:chapter>', methods=['GET'])
 def get_op_chapter(chapter):
     url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
 
@@ -214,7 +219,7 @@ def get_op_chapter(chapter):
     return obj
 
 
-@app.route('/', methods=['GET'])
+@ app.route('/', methods=['GET'])
 def root():
     if os.environ.get('ENV_EXAMPLE'):
         message = os.environ.get('ENV_EXAMPLE')
@@ -224,7 +229,7 @@ def root():
     # return 'ok'
 
 
-@app.route('/TCB-chapter-list', methods=['GET'])
+@ app.route('/TCB-chapter-list', methods=['GET'])
 def get_chapters():
     try:
 
@@ -268,7 +273,7 @@ def get_chapters():
         return {"page_info": f'{e}'}
 
 
-@app.route('/TCB-chapter/<int:chapter>', methods=['GET'])
+@ app.route('/TCB-chapter/<int:chapter>', methods=['GET'])
 def get_page_content(chapter):
     try:
         url = "https://onepiecechapters.com/mangas/5/one-piece"
