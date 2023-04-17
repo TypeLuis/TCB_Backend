@@ -176,7 +176,7 @@ def get_OP_chapters():
             chapter_list.append(obj)
 
         cache[url] = chapter_list
-        return chapter_list
+        return [str(doc)]
 
         # else:
         #     return cache[url]
