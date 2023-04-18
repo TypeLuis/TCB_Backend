@@ -36,9 +36,12 @@ def get_data(url):
     session = requests.Session()
     session.headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36',
-        # 'referer': 'https://magiceden.io/',
+        'referer': f"{url.split('/')[0]}//{url.split('/')[2]}/",
         'accept': 'application/json'
     }
+
+    print(session.headers)
+    print(f"{url.split('/')[0]}//{url.split('/')[2]}/")
 
     page = session.get(url).text
     doc = bs(page, "html.parser")
