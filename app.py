@@ -128,8 +128,8 @@ def test(chapter):
     for image in images:
         image_list.append(image['src'].strip())
 
-    return {"images": image_list}
-    # return str(doc)
+    # return {"images": image_list}
+    return str(doc)
     # wp-manga-chapter-img
 
 
