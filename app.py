@@ -33,10 +33,14 @@ cache = dict()
 
 
 def get_data(url):
-    headers = {
-        'User-Agent': "user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36",
+    session = requests.Session()
+    session.headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.84 Safari/537.36',
+        # 'referer': 'https://magiceden.io/',
+        'accept': 'application/json'
     }
-    page = requests.get(url, headers=headers).text
+
+    page = session.get(url).text
     doc = bs(page, "html.parser")
     return doc
 
@@ -125,6 +129,7 @@ def test(chapter):
         image_list.append(image['src'].strip())
 
     return {"images": image_list}
+    # return str(doc)
     # wp-manga-chapter-img
 
 
