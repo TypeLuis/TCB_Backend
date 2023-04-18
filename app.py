@@ -1,7 +1,6 @@
-import logging
-import sys
 import os
 from flask import Flask
+from flask import request
 import requests
 from bs4 import BeautifulSoup as bs
 from flask_cors import CORS
@@ -26,9 +25,6 @@ app = Flask(__name__)
 CORS(app)
 
 
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.ERROR)
-
 # app.register_blueprint(example_blueprint)
 
 domain = "https://onepiecechapters.com"
@@ -42,21 +38,7 @@ def get_data(url):
     return doc
 
 
-@app.route('/test', methods=['GET'])
-def test():
-    doc = get_data('https://opscans.com/manga/72/vol-tbe-ch-1019/')
-
-    image_list = []
-
-    images = doc.find_all("img", {"class": "wp-manga-chapter-img"})
-    for image in images:
-        image_list.append(image['src'].strip())
-
-    return {"images": image_list, }
-    # wp-manga-chapter-img
-
-
-@app.route('/opscan-chapter', methods=['GET'])
+@app.route('/OPSCAN-chapter-list', methods=['GET'])
 def opscan_chapters():
     url = 'https://opscans.com/manga/72/'
 
@@ -78,7 +60,7 @@ def opscan_chapters():
             driver.get(url)
 
             try:
-
+                # Waits until element is visable
                 element = WebDriverWait(driver, 10).until(
                     EC.presence_of_element_located(
                         (By.CLASS_NAME, "chapter-release-date"))
@@ -128,7 +110,22 @@ def opscan_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@ app.route('/OPSCAN-chapter-list', methods=['GET'])
+@ app.route('/OPSCAN-chapter/<int:chapter>', methods=['GET'])
+def test(chapter):
+    url = request.args.get('url')
+    doc = get_data(url)
+
+    image_list = []
+
+    images = doc.find_all("img", {"class": "wp-manga-chapter-img"})
+    for image in images:
+        image_list.append(image['src'].strip())
+
+    return {"images": image_list}
+    # wp-manga-chapter-img
+
+
+@ app.route('/OPSCAN_Backup-chapter-list', methods=['GET'])
 def get_OP_chapters():
     url = 'https://coloredmanga.com/mangas/opscans-onepiece/'
 
@@ -150,10 +147,7 @@ def get_OP_chapters():
             doc = bs(driver.page_source, "html.parser")
             driver.quit()
 
-            # doc = get_data(url)
-
             chapters = doc.find_all('li', {'class': "wp-manga-chapter"})
-            print(chapters)
             chapter_list = []
 
             for chapter in chapters:
@@ -180,7 +174,7 @@ def get_OP_chapters():
     return {"chapter_list": extract_page_content(url)}
 
 
-@ app.route('/OPSCAN-chapter/<int:chapter>', methods=['GET'])
+@ app.route('/OPSCAN_Backup-chapter/<int:chapter>', methods=['GET'])
 def get_op_chapter(chapter):
     url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
 
@@ -262,7 +256,7 @@ def get_chapters():
                         continue
 
                     obj["title"] = title
-                    obj["chapter"] = chapter
+                    obj["chapter"] = chapter.split(' ')[1]
                     obj["url"] = url
 
                     chapter_list.append(obj)
@@ -281,25 +275,27 @@ def get_chapters():
 @ app.route('/TCB-chapter/<int:chapter>', methods=['GET'])
 def get_page_content(chapter):
     try:
-        url = "https://onepiecechapters.com/mangas/5/one-piece"
-        doc = get_data(url)
         image_list = []
 
-        div = doc.find(class_='col-span-2')
-        item = div.find(text=f'One Piece Chapter {chapter}').parent.parent
+        if request.args.get('url'):
+            url = request.args.get('url')
+        else:
+            link = "https://onepiecechapters.com/mangas/5/one-piece"
+            doc = get_data(link)
 
-        title = item.find(class_='text-gray-500').text
-        chapter_number = item.find(class_='text-lg font-bold').text
-        page_url = item['href']
+            div = doc.find(class_='col-span-2')
+            item = div.find(text=f'One Piece Chapter {chapter}').parent.parent
 
-        link = f'{domain}{page_url}'
+            page_url = item['href']
 
-        page = get_data(link)
+            url = f'{domain}{page_url}'
+
+        page = get_data(url)
         images = page.find_all("img", {"class": "fixed-ratio-content"})
         for image in images:
             image_list.append(image['src'])
 
-        return {"images": image_list, 'title': title, 'chapter': chapter_number}
+        return {"images": image_list}
 
     except Exception as e:
         print(e)
