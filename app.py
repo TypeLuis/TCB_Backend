@@ -189,7 +189,7 @@ def get_OP_chapters():
                     # [1:] removes first character of string
                     obj['title'] = title.split('-')[1][1:]
                     # [:-1] removes last character of string
-                    obj["chapter"] = title.split('-')[0][:-1]
+                    obj["chapter"] = title.split('-')[0][:-1].split(' ')[1]
 
                 chapter_list.append(obj)
 
