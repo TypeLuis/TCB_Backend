@@ -182,7 +182,7 @@ def get_OP_chapters():
                 obj = {}
 
                 title = chapter.find('a').text.strip()
-                obj["chapter"] = title
+                obj["chapter"] = title.split(' ')[1]
                 obj["url"] = chapter.find("a")["href"]
 
                 if "-" in title:
