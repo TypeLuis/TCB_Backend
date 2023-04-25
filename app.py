@@ -204,7 +204,10 @@ def get_OP_chapters():
 
 @ app.route('/OPSCAN_Backup-chapter/<int:chapter>', methods=['GET'])
 def get_op_chapter(chapter):
-    url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
+    if request.args.get('url'):
+        url = request.args.get('url')
+    else:
+        url = f'https://coloredmanga.com/mangas/opscans-onepiece/chapter-{chapter}/'
 
     obj = {}
     image_list = []
