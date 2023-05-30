@@ -106,23 +106,27 @@ def opscan_chapters():
                 details = chapter.parent
                 title = details.find('a').text.strip()
 
+                print(title)
+
                 if '-' in title:
                     obj['title'] = title.split('-')[1][1:].replace("\"", "'")
 
                 obj['url'] = details.find('a')['href']
 
-                if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
-                    num = title.split(' ')[3]
-                    if '.' not in num:
-                        obj['chapter'] = int(num)
-                    else:
-                        continue
-                else:
-                    num = title.split(' ')[1][3:]
-                    if '.' not in num:
-                        obj['chapter'] = int(num)
-                    else:
-                        continue
+                obj['chapter'] = int(title.split(' ')[1])
+
+                # if 'Chapter' in title and title.split(' ')[3] != 'Chapter':
+                #     num = title.split(' ')[3]
+                #     if '.' not in num:
+                #         obj['chapter'] = int(num)
+                #     else:
+                #         continue
+                # else:
+                #     num = title.split(' ')[1][3:]
+                #     if '.' not in num:
+                #         obj['chapter'] = int(num)
+                #     else:
+                #         continue
 
                 data_list.append(obj)
 
@@ -182,14 +186,24 @@ def get_OP_chapters():
                 obj = {}
 
                 title = chapter.find('a').text.strip()
-                obj["chapter"] = title.split(' ')[1]
-                obj["url"] = chapter.find("a")["href"]
 
+                if 'TBE' in title.split(' ')[1]:
+                    obj["chapter"] = title.split(' ')[3]
+                else:
+                    obj["chapter"] = title.split(' ')[1]
+
+                obj["url"] = chapter.find("a")["href"]
                 if "-" in title:
                     # [1:] removes first character of string
                     obj['title'] = title.split('-')[1][1:]
-                    # [:-1] removes last character of string
-                    obj["chapter"] = title.split('-')[0][:-1].split(' ')[1]
+
+                    if "TBE" in title.split('-')[0][:-1].split(' ')[1]:
+                        obj["chapter"] = title.split(
+                            '-')[0][:-1].split(' ')[3]
+                    else:
+                        # [:-1] removes last character of string
+                        obj["chapter"] = title.split(
+                            '-')[0][:-1].split(' ')[1]
 
                 chapter_list.append(obj)
 
